@@ -268,8 +268,9 @@ function reverseString(str) {
   const wordsArray = str.split(' ');
   const reverseWordsArray = wordsArray.reverse();
   const result = reverseWordsArray.map((word) => {
-    const wordArray = word.split();
-    return wordArray.reverse().join('');
+    const wordArray = word.split('');
+    const reversWordArray = wordArray.reverse();
+    return reversWordArray.join('');
   });
   return result.join(' ');
 }
