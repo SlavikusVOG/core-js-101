@@ -19,7 +19,7 @@
  *    'Tue, 26 Jan 2016 13:48:02 GMT' => Date()
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
-function parseDataFromRfc2822(/* value */) {
+function parseDataFromRfc2822(value) {
   return new Date(value);
 }
 
@@ -55,18 +55,15 @@ function parseDataFromIso8601(value) {
  */
 function isLeapYear(date) {
   if (date.year % 4 === 0) {
-    if (date.year & 100 === 0) {
+    if (date.year % 100 === 0) {
       if (date.year % 400 === 0) {
         return true;
       }
-      else return false;
+      return false;
     }
-    else {
-      return true;
-    }
-  } else {
-    return false;
+    return true;
   }
+  return false;
 }
 
 
