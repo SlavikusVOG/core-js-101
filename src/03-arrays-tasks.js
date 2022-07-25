@@ -600,8 +600,15 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const groupedData = new Map();
+  array.forEach((item) => {
+    if (!groupedData.has(item.country)) {
+      groupedData.set(item.country, [])
+    }
+    groupedData[item.country].push(item.city);
+  });
+  return groupedData;
 }
 
 
@@ -618,8 +625,13 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  const result = [];
+  arr.forEach((item) => {
+    const newArray = Array.from(arr);
+    result.push(...newArray);
+  })
+  return result;
 }
 
 
@@ -635,8 +647,10 @@ function selectMany(/* arr, childrenSelector */) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  return indexes.reduce((prev, curr) => {
+    return prev[curr];
+  }, arr);
 }
 
 
@@ -658,8 +672,15 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  const half = Math.round(arr.length / 2);
+  const hasMiddle = !!(arr.length % 2);
+  const head = arr.slice(0, half);
+  const tail = hasMiddle ? arr.slice(half + 1) : arr.slice(half);
+  const middleIndex = hasMiddle ? half : null;
+  return hasMiddle
+    ? [].push(...tail).push(arr[middleIndex]).push(...head)
+    : [].push(...tail).push(...head);
 }
 
 
