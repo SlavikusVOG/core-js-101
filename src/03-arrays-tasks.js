@@ -40,7 +40,12 @@ function generateOdds(len) {
     return [];
   }
   const array = new Array(len);
-  return array.reduce((prev, curr, currIndex) => prev.push(currIndex * 2 + 1), []);
+  array.fill(' ');
+  const result = array.reduce((prev, curr, currIndex) => {
+    prev.push(currIndex * 2 + 1);
+    return prev;
+  }, []);
+  return result;
 }
 
 
@@ -57,7 +62,9 @@ function generateOdds(len) {
  *    [] => []
  */
 function doubleArray(arr) {
-  return arr.join(...arr);
+  const result = [...arr];
+  result.push(...arr);
+  return result;
 }
 
 
@@ -88,7 +95,7 @@ function getArrayOfPositives(arr) {
  *    [ 'cat, 'dog', 'raccoon' ] => [ 'cat', 'dog', 'raccoon' ]
  */
 function getArrayOfStrings(arr) {
-  arr.filter((value) => typeof value === 'string');
+  return arr.filter((value) => typeof value === 'string');
 }
 
 /**
@@ -105,14 +112,24 @@ function getArrayOfStrings(arr) {
  *    [ false, 0, NaN, '', undefined ]   => [ ]
  */
 function removeFalsyValues(arr) {
-  return arr.filter((value) => value === false
-      && value === 0
-      && value.toString() === '-0'
-      && value.toString() === '0n'
-      && value === ''
-      && value === null
-      && value === undefined
-      && value.toString() === 'NaN');
+  const result = arr.filter((value) => {
+    if (typeof (value) === 'string' && value !== '') {
+      return true;
+    }
+    if (
+      value === false
+      || value === undefined
+      || value === null
+      || value === 0
+      || value.toString() === '-0'
+      || value.toString() === '0n'
+      || value === ''
+      || value.toString() === 'NaN') {
+      return false;
+    }
+    return true;
+  });
+  return result;
 }
 
 /**
@@ -159,7 +176,7 @@ function getStringsLength(arr) {
 function insertItem(arr, item, index) {
   const replacedItem = arr.slice(index);
   replacedItem.unshift(item);
-  arr.splice(index, arr.length, replacedItem);
+  arr.splice(index, arr.length, ...replacedItem);
 }
 
 /**
@@ -213,7 +230,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  arr.join('\n');
+  return arr.join('\n');
 }
 
 /**
@@ -247,12 +264,10 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  arr.map((value, index, array) => {
-    let sum = 0;
-    for (let i = 0; i < index; i += 1) {
-      sum += array.index;
-    }
-    return sum + value;
+  let sum = 0;
+  return arr.map((value) => {
+    sum += value;
+    return sum;
   });
 }
 
@@ -311,7 +326,9 @@ function propagateItemsByPositionIndex(arr) {
  *   [ 10, 10, 10, 10 ] => [ 10, 10, 10 ]
  */
 function get3TopItems(arr) {
-  return arr.sort((a, b) => b > a).slice(0, 3);
+  const result = [...arr];
+  result.sort((a, b) => -(a - b));
+  return result.slice(0, 3);
 }
 
 
@@ -330,9 +347,9 @@ function get3TopItems(arr) {
  */
 function getPositivesCount(arr) {
   return arr.reduce((prev, curr) => {
-    let result = 0;
-    if (curr > 0) {
-      result = prev + 1;
+    let result = prev;
+    if (typeof (curr) === 'number' && curr > 0) {
+      result += 1;
     }
     return result;
   }, 0);
@@ -413,7 +430,8 @@ function getItemsSum(arr) {
  *  [ null, undefined, NaN, false, 0, '' ]  => 6
  */
 function getFalsyValuesCount(arr) {
-  arr.filter((value) => !!value);
+  const falsyArray = arr.filter((value) => !value);
+  return falsyArray.length;
 }
 
 /**
@@ -436,7 +454,7 @@ function findAllOccurrences(arr, item) {
       return prev + 1;
     }
     return prev;
-  });
+  }, 0);
 }
 
 /**
@@ -520,7 +538,7 @@ function sortCitiesArray(arr) {
 function getIdentityMatrix(n) {
   const array = new Array(n);
   array.fill(new Array(n));
-  array.map((value, index) => {
+  return array.map((value, index) => {
     const newValue = [...value];
     newValue.fill(0);
     newValue[index] = 1;
@@ -543,7 +561,7 @@ function getIdentityMatrix(n) {
  */
 function getIntervalArray(start, end) {
   const result = [];
-  for (let i = start; i < end; i += 1) {
+  for (let i = start; i <= end; i += 1) {
     result.push(i);
   }
   return result;
@@ -673,14 +691,21 @@ function getElementByIndexes(arr, indexes) {
  *
  */
 function swapHeadAndTail(arr) {
-  const half = Math.round(arr.length / 2);
+  if (arr.length === 1) {
+    return arr;
+  }
+  const half = Math.floor(arr.length / 2);
   const hasMiddle = !!(arr.length % 2);
   const head = arr.slice(0, half);
   const tail = hasMiddle ? arr.slice(half + 1) : arr.slice(half);
   const middleIndex = hasMiddle ? half : null;
-  return hasMiddle
-    ? [].push(...tail).push(arr[middleIndex]).push(...head)
-    : [].push(...tail).push(...head);
+  const result = [];
+  result.push(...tail);
+  if (hasMiddle) {
+    result.push(arr[middleIndex]);
+  }
+  result.push(...head);
+  return result;
 }
 
 
