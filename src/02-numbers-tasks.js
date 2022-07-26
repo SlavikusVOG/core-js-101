@@ -52,6 +52,10 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
+  const result = (value1 + value2) / 2;
+  if (result === Infinity) {
+    return Number.MAX_VALUE;
+  }
   return (value1 + value2) / 2;
 }
 
@@ -127,7 +131,8 @@ function getAngleBetweenVectors(/* x1, y1, x2, y2 */) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return value.toString().value.toString()[value.toString().length];
+  const strValue = value.toString();
+  return Number(strValue.charAt(strValue.length - 1));
 }
 
 
@@ -143,7 +148,7 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-  Number(value);
+  return Number.parseFloat(value, 10);
 }
 
 /**
@@ -182,8 +187,9 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  const substructable = num % (10 ** pow);
-  return num - substructable;
+  const preResult = Math.round(num / (10 ** pow));
+  const result = preResult * (10 ** pow);
+  return result;
 }
 
 /**
@@ -203,18 +209,11 @@ function roundToPowerOfTen(num, pow) {
  *   16 => false
  *   17 => true
  */
-function isPrime(n) {
-  if (n <= 1) {
-    return false;
-  }
-  // Check from 2 to square root of n
-  for (let i = 2; i <= Math.sqrt(n, 2); i += 1) {
-    if (n % i === 0) {
-      return false;
-    }
-    return true;
-  }
-  return false;
+function isPrime(num) {
+  if (num === 2 || num === 3) { return true; }
+  if (num <= 1 || num % 2 === 0 || num % 3 === 0) { return false; }
+  for (let i = 5; i * i <= num; i += 6) { if (num % i === 0 || num % (i + 2) === 0) return false; }
+  return true;
 }
 
 /**
