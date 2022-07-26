@@ -55,7 +55,7 @@ function getStringLength(value) {
  */
 function getStringFromTemplate(firstName, lastName) {
   // throw new Error('Not implemented');
-  return `Hello, ${firstName} ${lastName}`;
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -70,7 +70,9 @@ function getStringFromTemplate(firstName, lastName) {
  */
 function extractNameFromTemplate(value) {
   // throw new Error('Not implemented');
-  return value.slice(7);
+  // return value.slice(7);
+  const re = new RegExp('\\w+\\s\\w+');
+  return value.match(re);
 }
 
 
@@ -213,9 +215,27 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  // eslint-disable-next-line quotes
-  return `|`;
+function getRectangleString(width, height) {
+  const result = [];
+  for (let i = 0; i < height; i += 1) {
+    const array = new Array(width);
+    if (i === 0 || i === height - 1) {
+      array.fill('─');
+      if (i === 0) {
+        array[0] = '┌';
+        array[width - 1] = '┐';
+      } else {
+        array[0] = '└';
+        array[width - 1] = '┘';
+      }
+    } else {
+      array.fill(' ');
+      array[0] = '│';
+      array[width - 1] = '│';
+    }
+    result.push(array.join(''));
+  }
+  return `${result.join('\n')}\n`;
 }
 
 
@@ -235,9 +255,8 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(str) {
-  // eslint-disable-next-line no-return-assign, no-cond-assign, no-param-reassign
-  str.replace(/[a-zA-Z]/g, (c) => String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c = c.charCodeAt(0) + 13) ? c : c - 26));
+function encodeToRot13(/* str */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -253,8 +272,9 @@ function encodeToRot13(str) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  // throw new Error('Not implemented');
+  return typeof (value) === 'string' || value instanceof String;
 }
 
 
